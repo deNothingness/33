@@ -73,8 +73,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .tab-add{padding:8px 16px;border-radius:40px;font-weight:500;font-size:14px;font-family:inherit;cursor:pointer;background:transparent;border:1px dashed var(--border2);color:var(--text3);transition:.2s;white-space:nowrap;flex-shrink:0}
 .tab-add:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,101,242,0.08)}
 
-/* CRITERIA */
-.criteria-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem;background:var(--surface);padding:8px 14px;border-radius:40px;width:fit-content}
+/* CRITERIA — горизонтальный скролл */
+.criteria-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:1.5rem}
+.criteria-wrap::-webkit-scrollbar{display:none}
+.criteria-bar{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;background:var(--surface);padding:8px 14px;border-radius:40px;width:fit-content;min-width:max-content}
 .criteria-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
 .criteria-chip input{background:var(--raised);padding:5px 12px;border:1px solid var(--border2);border-radius:30px;font-size:13px;font-weight:500;color:var(--text);width:108px;font-family:inherit;outline:none;text-align:center;transition:.15s}
 .criteria-chip input:focus{border-color:var(--accent)}
@@ -112,15 +114,16 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .item.has-poster-yt{grid-template-columns:44px 140px 1fr auto}
 .item.no-poster{grid-template-columns:44px 1fr auto}
 @media(max-width:600px){
-  .item.has-poster{grid-template-columns:32px 52px 1fr auto}
-  .item.has-poster-yt{grid-template-columns:32px 100px 1fr auto}
-  .item.no-poster{grid-template-columns:32px 1fr auto}
-  .item{padding:10px 12px;gap:10px}
-  .item-poster{width:52px;height:78px}
-  .item-poster-yt{width:100px;height:56px}
-  .item-poster-sq{width:52px;height:52px}
+  .container{padding:1rem 0.75rem 4rem}
+  .page-title-text{font-size:32px}
+  /* на мобиле прячем постер в сетке чтобы не ломать layout */
+  .item.has-poster,.item.has-poster-yt,.item.no-poster{grid-template-columns:32px 1fr auto}
+  .item-poster,.item-poster-sq,.item-poster-yt{display:none}
+  .item{padding:10px 12px;gap:8px}
   .avg-num{font-size:20px}
-  .container{padding:1rem 1rem 4rem}
+  .avg-badge{min-width:56px;padding:5px 10px}
+  .btn-manual{padding:10px 12px;font-size:13px}
+  .search-row input{font-size:13px;padding:10px 12px 10px 38px}
 }
 .rank-col{display:flex;flex-direction:column;align-items:flex-end;gap:3px;padding-top:2px}
 .rank{font-size:18px;font-weight:700;color:var(--text3);text-align:right}
@@ -135,13 +138,16 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .item-poster-yt{width:140px;height:79px;object-fit:cover;border-radius:8px;background:var(--raised);box-shadow:0 2px 8px rgba(0,0,0,0.3)}
 .item-body{display:flex;flex-direction:column;gap:8px;min-width:0}
 .item-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.item-title-link{font-size:15px;font-weight:700;color:#fff;line-height:1.3;word-break:break-word;text-decoration:none;transition:color .15s}
+.item-title-link{font-size:15px;font-weight:700;color:#fff;line-height:1.3;word-break:normal;overflow-wrap:anywhere;text-decoration:none;transition:color .15s}
 .item-title-link:hover{color:var(--accent)}
-.item-title{font-size:15px;font-weight:700;color:#fff;line-height:1.3;word-break:break-word}
+.item-title{font-size:15px;font-weight:700;color:#fff;line-height:1.3;word-break:normal;overflow-wrap:anywhere}
 .item-title-input{font-size:15px;font-weight:700;background:var(--raised);border:1px solid var(--accent);border-radius:8px;padding:4px 8px;color:#fff;width:100%;font-family:inherit;outline:none}
 .item-meta{font-size:12px;color:var(--text2);margin-top:2px}
-.scores{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
-.score-field{display:flex;flex-direction:column;gap:3px;background:var(--raised);padding:5px 10px;border-radius:30px}
+/* scores — горизонтальный скролл на мобиле, не переносятся */
+.scores-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-top:2px}
+.scores-wrap::-webkit-scrollbar{display:none}
+.scores{display:flex;gap:8px;flex-wrap:nowrap;align-items:flex-end;min-width:max-content}
+.score-field{display:flex;flex-direction:column;gap:3px;background:var(--raised);padding:5px 10px;border-radius:30px;flex-shrink:0}
 .score-field label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase}
 .score-field input{width:54px;padding:5px 0;text-align:center;background:var(--surface);border:1px solid var(--border2);border-radius:30px;font-size:14px;font-weight:600;color:var(--text);font-family:inherit;transition:.15s}
 .score-field input:focus{outline:none;border-color:var(--accent)}
@@ -214,7 +220,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
     <span class="page-title-badge" id="cat-label">фильмы</span>
   </div>
   <div class="tabs-wrap"><div class="tabs" id="tabs"></div></div>
-  <div class="criteria-bar" id="criteria-bar"></div>
+  <div class="criteria-wrap"><div class="criteria-bar" id="criteria-bar"></div></div>
   <div class="search-wrap" id="search-wrap">
     <div class="search-row">
       <i class="ti ti-search search-icon"></i>
@@ -442,11 +448,11 @@ function renderList() {
           <div style="flex:1;min-width:0">${titleEl}${item.year?`<div class="item-meta">📅 ${esc(item.year)}</div>`:""}</div>
           <button class="del-btn" data-delitem="${item.id}"><i class="ti ti-trash"></i></button>
         </div>
-        <div class="scores">
+        <div class="scores-wrap"><div class="scores">
           ${c.criteria.map((cr,i)=>`<div class="score-field"><label>${esc(cr)}</label>
             <input type="number" min="0" max="10" step="0.1" value="${item.scores[i]!==null?item.scores[i]:""}" placeholder="—" data-sid="${item.id}" data-si="${i}"/></div>`).join("")}
           ${extra}
-        </div>
+        </div></div>
       </div>
       <div class="avg-badge"><div class="avg-num ${avgC(a)}">${aStr}</div><div class="avg-label">средняя</div></div>
     </div>`;

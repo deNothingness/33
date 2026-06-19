@@ -137,7 +137,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 /* poster placeholder — сохраняет размер при ошибке загрузки */
 .poster-wrap{position:relative;flex-shrink:0}
 .poster-wrap img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
-.poster-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:inherit;background:var(--raised)}
+.poster-ph{position:absolute;inset:0;display:none;align-items:center;justify-content:center;border-radius:inherit;background:var(--raised)}
 .poster-ph img{width:60%;height:60%;object-fit:contain;opacity:0.25;border-radius:0}
 .item-poster-wrap{width:64px;height:96px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.3);flex-shrink:0;overflow:hidden;position:relative;background:var(--raised)}
 .item-poster-sq-wrap{width:64px;height:64px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.3);flex-shrink:0;overflow:hidden;position:relative;background:var(--raised)}
@@ -459,7 +459,7 @@ function renderList() {
     let posterEl="";
     if (hasPoster) {
       const wrapCls=isYT?"item-poster-yt-wrap":isMus?"item-poster-sq-wrap":"item-poster-wrap";
-      posterEl=`<div class="${wrapCls}"><img src="${esc(item.poster)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.opacity=0"/><div class="poster-ph"><img src="${FALLBACK_IMG}" alt=""/></div></div>`;
+      posterEl=`<div class="${wrapCls}"><img src="${esc(item.poster)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="poster-ph"><img src="${FALLBACK_IMG}" alt=""/></div></div>`;
     }
     let titleEl="";
     if (item.link) titleEl=`<a class="item-title-link" href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.name)||"—"}</a>`;
@@ -534,7 +534,7 @@ function renderDraft() {
   const c = cat();
   const isYT = c.srcType==="youtube", isMus = c.srcType==="lastfm";
   const draftWrapStyle = isYT?"width:120px;height:68px":"width:60px;height:"+(isMus?"60":"90")+"px";
-  const posterEl = draft.poster ? `<div style="${draftWrapStyle};border-radius:8px;flex-shrink:0;overflow:hidden;position:relative;background:var(--raised)"><img src="${esc(draft.poster)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.opacity=0"/><div class="poster-ph"><img src="${FALLBACK_IMG}" alt=""/></div></div>` : "";
+  const posterEl = draft.poster ? `<div style="${draftWrapStyle};border-radius:8px;flex-shrink:0;overflow:hidden;position:relative;background:var(--raised)"><img src="${esc(draft.poster)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="poster-ph"><img src="${FALLBACK_IMG}" alt=""/></div></div>` : "";
   const a = draft.scores.filter(x=>x!==null&&x!=="");
   const avgVal = a.length ? (a.reduce((s,v)=>s+Number(v),0)/a.length) : null;
   const avgStr = avgVal!==null ? avgVal.toFixed(1) : "—";
